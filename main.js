@@ -33,13 +33,21 @@ handleClick = function(event) {
     currentPlayer = nextPlayer;
 
     playerSelections.push(parseInt(cell.id))
-    //
+
+    if (checkWinner(playerSelections)) {
+        alert("Player " + nextPlayer + " Wins, and Ryan always loses.")
+        resetGame();
+    }
+    if (checkDraw()) {
+        alert("It is a draw, but Ryan still loses.")
+        resetGame();
+    }
 }
 
 function checkWinner(player) {
-    for (i = 0; i < winningCombinations.length; i++) {
+    for (let i = 0; i < winningCombinations.length; i++) {
         var matches = 0;
-        for (m = 0; m < winningCombinations[i].length; m++) { 
+        for (let m = 0; m < winningCombinations[i].length; m++) { 
             if (player.includes(winningCombinations[i][m])) {
                 matches++;
             }
@@ -48,19 +56,30 @@ function checkWinner(player) {
              }
             
         }
-        if (matches = 3) {
+        if (matches == 3) {
             return true;
         }
 
     }
+    return false;
 }
 
 function checkDraw() {
-    return playerXSelections.length + playerOSelections >= cells.length;
+    console.log(cells.length)
+    console.log(playerXSelections.length )
+    return playerXSelections.length + playerOSelections.length == cells.length;
+}
+
+function resetGame() {
+    playerXSelections = new Array();
+    playerOSelections = new Array();
+    for (let i = 0; i < cells.length; i++) {
+        cells[i].innerHTML = "";
+    }
 }
 
 var cells = document.querySelectorAll("td");
 
-for (i = 0; i < cells.length; i++) {
+for (let i = 0; i < cells.length; i++) {
     cells[i].addEventListener('click', handleClick);
 }
